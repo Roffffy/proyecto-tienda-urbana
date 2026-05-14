@@ -1,7 +1,6 @@
 package com.tienda_urbana.usuarios.service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
