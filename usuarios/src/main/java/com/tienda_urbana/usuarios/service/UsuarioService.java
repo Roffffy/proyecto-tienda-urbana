@@ -1,6 +1,7 @@
 package com.tienda_urbana.usuarios.service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -29,27 +30,26 @@ public class UsuarioService {
                 dto.getClaveRecuperacion(), "Cliente", LocalDate.now())));
     }
 
-    public VisualizarDatosUsuarioResponseDTO verDatosUsuarioPorId(Long id) {
-        Usuario usuario = repo.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        return mapToDto(usuario);
+    public Optional<VisualizarDatosUsuarioResponseDTO> verDatosUsuarioPorId(Long id) {
+        return repo.findById(id).map(usuario -> mapToDto(usuario));
     }
 
-    public String cambiarContraseña(CambioContraseniaRequestDTO dto, Long usuarioId) {
-        Usuario usuario = repo.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuaro no encontrado"));
-        if (!usuario.getContraseña().equals(dto.getContraseñaAntigua())) {
-            return "La contraseña antigua no coincide";
-        }
-        usuario.setContraseña(dto.getContraseñaNueva());
-        ;
-        repo.save(usuario);
-        return "Contraseña cambiada con exito";
+    public Optional<String> cambiarContraseña(CambioContraseniaRequestDTO dto, Long id) {
+        return repo.findById(id).map(usuario -> {
+            if (dto.getContraseñaAntigua().equals(usuario.getContraseña())) {
+                usuario.setContraseña(dto.getContraseñaNueva());
+                repo.save(usuario);
+                return "Contraseña cambiada con exito";
+            } else {
+                return "La contraseña antigua no coincide";
+            }
+        });
     }
 
-    public String cambiarEmail(CambioEmailRequestDTO dto, Long usuarioId) {
-        Usuario usuario = repo.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuaro no encontrado"));
-        usuario.setEmail(dto.getNuevoEmail());
-        repo.save(usuario);
-        return "Email cambiado con exito";
+    public Optional<String> cambiarEmail(CambioEmailRequestDTO dto, Long usuarioId) {
+        return repo.findById(usuarioId).map(usuario -> {
+            usuario.setEmail(dto.getNuevoEmail());
+            return "Email actualizado con exito";
+        });
     }
 }

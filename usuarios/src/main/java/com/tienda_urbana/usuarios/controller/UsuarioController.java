@@ -1,5 +1,6 @@
 package com.tienda_urbana.usuarios.controller;
 
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,26 +25,26 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioController {
 
     private final UsuarioService service;
-    
+
     @PostMapping
-    public ResponseEntity<VisualizarDatosUsuarioResponseDTO> crearUsuario(@Valid @RequestBody CreacionUsuarioRequestDTO dto){
+    public ResponseEntity<VisualizarDatosUsuarioResponseDTO> crearUsuario(
+            @Valid @RequestBody CreacionUsuarioRequestDTO dto) {
         return ResponseEntity.status(201).body(service.crearUsuario(dto));
     }
 
     @GetMapping("/mi-cuenta/{id}")
-    public ResponseEntity<VisualizarDatosUsuarioResponseDTO> verDatosUsuarioPorId(@PathVariable Long id){
-        return ResponseEntity.ok(service.verDatosUsuarioPorId(id));
+    public ResponseEntity<VisualizarDatosUsuarioResponseDTO> verDatosUsuarioPorId(@PathVariable Long id) {
+        return service.verDatosUsuarioPorId(id).map(datos -> ResponseEntity.ok(datos)).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/mi-cuenta/modificar-contraseña/{id}")
-    public ResponseEntity<String> cambiarContraseña(@Valid @RequestBody CambioContraseniaRequestDTO dto, @PathVariable Long id){
-        return ResponseEntity.ok(service.cambiarContraseña(dto, id));
+    public ResponseEntity<String> cambiarContraseña(@Valid @RequestBody CambioContraseniaRequestDTO dto, @PathVariable Long id) {
+        return service.cambiarContraseña(dto, id).map(resultado -> ResponseEntity.ok(resultado)).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/mi-cuenta/modificar-email/{id}")
-    public ResponseEntity<String> cambiarEmail(@Valid @RequestBody CambioEmailRequestDTO dto, @PathVariable Long id){
-        return ResponseEntity.ok(service.cambiarEmail(dto, id));
+    public ResponseEntity<String> cambiarEmail(@Valid @RequestBody CambioEmailRequestDTO dto, @PathVariable Long id) {
+        return service.cambiarEmail(dto, id).map(resultado -> ResponseEntity.ok(resultado)).orElse(ResponseEntity.notFound().build());
     }
 
-    
 }
