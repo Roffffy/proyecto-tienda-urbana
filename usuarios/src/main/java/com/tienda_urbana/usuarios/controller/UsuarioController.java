@@ -34,17 +34,18 @@ public class UsuarioController {
 
     @GetMapping("/mi-cuenta/{id}")
     public ResponseEntity<VisualizarDatosUsuarioResponseDTO> verDatosUsuarioPorId(@PathVariable Long id) {
-        return service.verDatosUsuarioPorId(id).map(datos -> ResponseEntity.ok(datos)).orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(service.verDatosUsuarioPorId(id));
     }
 
     @PutMapping("/mi-cuenta/modificar-contraseña/{id}")
     public ResponseEntity<String> cambiarContraseña(@Valid @RequestBody CambioContraseniaRequestDTO dto, @PathVariable Long id) {
-        return service.cambiarContraseña(dto, id).map(resultado -> ResponseEntity.ok(resultado)).orElse(ResponseEntity.notFound().build());
+        service.cambiarContraseña(id, dto);
+        return ResponseEntity.ok("Contraseña modificada con exito.");
     }
 
     @PutMapping("/mi-cuenta/modificar-email/{id}")
-    public ResponseEntity<String> cambiarEmail(@Valid @RequestBody CambioEmailRequestDTO dto, @PathVariable Long id) {
-        return service.cambiarEmail(dto, id).map(resultado -> ResponseEntity.ok(resultado)).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<VisualizarDatosUsuarioResponseDTO> cambiarEmail(@Valid @RequestBody CambioEmailRequestDTO dto, @PathVariable Long id) {
+        return ResponseEntity.ok(service.cambiarEmail(id, dto));
     }
 
 }
