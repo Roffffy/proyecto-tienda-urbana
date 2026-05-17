@@ -1,7 +1,7 @@
 package com.tienda_urbana.usuarios.service;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -30,26 +30,22 @@ public class UsuarioService {
                 dto.getClaveRecuperacion(), "Cliente", LocalDate.now())));
     }
 
-    public Optional<VisualizarDatosUsuarioResponseDTO> verDatosUsuarioPorId(Long id) {
-        return repo.findById(id).map(usuario -> mapToDto(usuario));
+    public VisualizarDatosUsuarioResponseDTO verDatosUsuarioPorId(Long id){
+        return repo.findById(id).map(usuario -> mapToDto(usuario)).orElseThrow(() -> new NoSuchElementException("El usuario con ID: \" + id + \" no existe."));
     }
 
-    public Optional<String> cambiarContraseña(CambioContraseniaRequestDTO dto, Long id) {
-        return repo.findById(id).map(usuario -> {
-            if (dto.getContraseñaAntigua().equals(usuario.getContraseña())) {
-                usuario.setContraseña(dto.getContraseñaNueva());
-                repo.save(usuario);
-                return "Contraseña cambiada con exito";
-            } else {
-                return "La contraseña antigua no coincide";
-            }
-        });
+    public void cambiarContraseña(Long id, CambioContraseniaRequestDTO dto){
+        Usuario usuario = repo.findById(id).orElseThrow(() -> new NoSuchElementException("El usuario con ID: " + id + " no existe."));  
+        if (!dto.getContraseñaAntigua().equals(usuario.getContraseña())) {
+            throw new IllegalArgumentException("La contraseña antigua no coincide");
+        }
+        usuario.setContraseña(dto.getContraseñaNueva());
+        repo.save(usuario);
     }
 
-    public Optional<String> cambiarEmail(CambioEmailRequestDTO dto, Long usuarioId) {
-        return repo.findById(usuarioId).map(usuario -> {
-            usuario.setEmail(dto.getNuevoEmail());
-            return "Email actualizado con exito";
-        });
+    public VisualizarDatosUsuarioResponseDTO cambiarEmail(Long id, CambioEmailRequestDTO dto){
+        Usuario usuario = repo.findById(id).orElseThrow(() -> new NoSuchElementException("El usuario con ID: " + id + " no existe."));
+        usuario.setEmail(dto.getNuevoEmail());
+        return mapToDto(repo.save(usuario));
     }
 }
