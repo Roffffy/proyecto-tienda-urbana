@@ -1,0 +1,15 @@
+package com.tienda_urbana.catalogo.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductoListaResponseDTO {
+
+    private String nombre;
+    private int precio;
+    private String categoria;
+}
