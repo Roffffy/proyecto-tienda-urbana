@@ -1,7 +1,6 @@
 package com.tienda_urbana.catalogo.service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -12,14 +11,18 @@ import com.tienda_urbana.catalogo.exception.CategoriaYaExistenteException;
 import com.tienda_urbana.catalogo.exception.ElementoNoEncontradoException;
 import com.tienda_urbana.catalogo.model.Categoria;
 import com.tienda_urbana.catalogo.repository.CategoriaRepository;
+import com.tienda_urbana.catalogo.repository.ProductoRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CategoriaService {
 
     private final CategoriaRepository repo;
+    private final ProductoRepository prodRepo;
 
     private CategoriaResponseDTO mapToDto(Categoria categoria) {
         return new CategoriaResponseDTO(categoria.getNombre());
@@ -33,7 +36,7 @@ public class CategoriaService {
     }
 
     public CategoriaResponseDTO editarCategoria(Long id, CategoriaRequestDTO dto){
-        Categoria categoria = repo.findById(id).orElseThrow(() -> new NoSuchElementException("La categoria con ID: " + id + " no existe."));
+        Categoria categoria = repo.findById(id).orElseThrow(() -> new ElementoNoEncontradoException("Categoria", id));
         if (repo.existsByNombre(dto.getNombre())) {
             throw new CategoriaYaExistenteException(dto.getNombre());
         }
@@ -53,6 +56,12 @@ public class CategoriaService {
         if (!repo.existsById(id)) {
             throw new ElementoNoEncontradoException("Categoria", id);
         }
+        if (id == 1) {
+            // Cambiar excepcion
+            throw new RuntimeException("No se puede eliminar la categoria con ID: 1");
+        }
+        
+        prodRepo.reasignarCategoria(id);
         repo.deleteById(id);
     }
 }
