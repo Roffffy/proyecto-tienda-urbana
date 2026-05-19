@@ -34,6 +34,9 @@ public class ProductoService {
     }
 
     public ProductoResponseDTO crearProducto(ProductoRequestDTO dto) {
+        if (dto.getCategoriaId()==null) {
+            dto.setCategoriaId(1L);
+        }
         Categoria categoria = catRepo.findById(dto.getCategoriaId())
                 .orElseThrow(() -> new ElementoNoEncontradoException("Categoria", dto.getCategoriaId()));
         return mapToDto(prodRepo.save(new Producto(null, dto.getNombre(), dto.getDescripcion(), dto.getPrecio(),

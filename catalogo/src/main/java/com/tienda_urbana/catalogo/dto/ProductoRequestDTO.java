@@ -32,6 +32,5 @@ public class ProductoRequestDTO {
     @Positive(message = "El stock debe ser un numero positivo")
     private int stock;
 
-    @NotNull(message = "El id de categoria no puede ser nulo")
     private Long categoriaId;
 }
