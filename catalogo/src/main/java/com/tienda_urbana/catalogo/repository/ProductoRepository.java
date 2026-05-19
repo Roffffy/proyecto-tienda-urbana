@@ -3,6 +3,7 @@ package com.tienda_urbana.catalogo.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Long>{
     List<Producto> buscarProducto(@Param("nombre") String nombre);
 
     List<Producto> findByCategoria(Categoria categoria);
+
+    @Modifying()
+    @Query("UPDATE Producto p set p.categoria = (SELECT c FROM Categoria c WHERE c.id = 1) WHERE p.categoria.id = :id")
+    void reasignarCategoria(@Param("id") Long id);
 }
