@@ -27,6 +27,7 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
+        Categoria sinCategoria = catRepo.save(new Categoria(null, "Sin Categoria"));
         Categoria categoriaPoleras = catRepo.save(new Categoria(null, "Poleras"));
         Categoria categoriaPantalones = catRepo.save(new Categoria(null, "Pantalones"));
         Categoria categoriaChaquetas = catRepo.save(new Categoria(null, "Chaquetas"));
@@ -76,10 +77,10 @@ public class DataInitializer implements CommandLineRunner {
 
         prodRepo.save(new Producto(null, "Vestido largo floreado", "Corte recto con tirantes ajustables y caída ligera de primavera", 39990, "S", 12, categoriaMujer));
         prodRepo.save(new Producto(null, "Falda midi plisada negra", "Cintura elástica con caída fluida, combinable para toda temporada", 22990, "M", 14, categoriaMujer));
-        prodRepo.save(new Producto(null, "Cardigan largo tejido beige", "Abierto sin botones, ideal para usar en capas los días frescos", 27990, "Talla Única", 18, categoriaMujer));
+        prodRepo.save(new Producto(null, "Cardigan largo tejido beige", "Abierto sin botones, ideal para usar en capas los días frescos", 27990, "M", 18, categoriaMujer));
 
-        prodRepo.save(new Producto(null, "Polera infantil dibujo animado", "Estampado frontal de alta resistencia a los lavados en algodón suave", 9990, "Talla 6", 35, categoriaNiños));
-        prodRepo.save(new Producto(null, "Pantalón con elástico reforzado", "Rodilleras reforzadas antidesgaste para resistir todos los juegos", 15990, "Talla 8", 22, categoriaNiños));
-        prodRepo.save(new Producto(null, "Pijama térmico de dinosaurios", "Dos piezas de plush extra suave para mantener el calor en invierno", 18990, "Talla 4", 18, categoriaNiños));
+        prodRepo.save(new Producto(null, "Polera infantil dibujo animado", "Estampado frontal de alta resistencia a los lavados en algodón suave", 9990, "6", 35, categoriaNiños));
+        prodRepo.save(new Producto(null, "Pantalón con elástico reforzado", "Rodilleras reforzadas antidesgaste para resistir todos los juegos", 15990, "8", 22, categoriaNiños));
+        prodRepo.save(new Producto(null, "Pijama térmico de dinosaurios", "Dos piezas de plush extra suave para mantener el calor en invierno", 18990, "4", 18, categoriaNiños));
     }
 }
