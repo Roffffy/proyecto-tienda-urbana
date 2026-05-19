@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ElementoNoEncontradoException.class)
     public ResponseEntity<ErrorResponseDTO> elementoNoEncontradoHandler(ElementoNoEncontradoException e, HttpServletRequest request){
-        logger.warn("{} con ID: {} | Path: {} | Mensaje: {}", e.getElemento(), request.getRequestURI(), e.getId());
+        logger.warn("{} con ID: {} | Path: {} | Mensaje: {}", e.getElemento(), e.getId(), request.getRequestURI(), e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(construirError(HttpStatus.NOT_FOUND, e.getMessage(), request.getRequestURI(), null));
     }
 
