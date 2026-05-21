@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
+import com.tienda_urbana.usuarios.client.CarritoClient;
 import com.tienda_urbana.usuarios.dto.CambioContraseniaRequestDTO;
 import com.tienda_urbana.usuarios.dto.CambioEmailRequestDTO;
 import com.tienda_urbana.usuarios.dto.CreacionUsuarioRequestDTO;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UsuarioService {
 
     private final UsuarioRepository repo;
+    private final CarritoClient cliente;
 
     private VisualizarDatosUsuarioResponseDTO mapToDto(Usuario usuario) {
         return new VisualizarDatosUsuarioResponseDTO(usuario.getNombre(), usuario.getEmail(),
@@ -29,8 +31,13 @@ public class UsuarioService {
         if (repo.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("El correo electronico ya esta registrado");
         }
-        return mapToDto(repo.save(new Usuario(null, dto.getNombre(), dto.getEmail(), dto.getContraseña(),
-                dto.getClaveRecuperacion(), "Cliente", LocalDate.now())));
+
+        Usuario usuario = repo.save(new Usuario(null,dto.getNombre(), dto.getEmail(), dto.getContraseña(),
+                dto.getClaveRecuperacion(), "Cliente", LocalDate.now()));
+
+        cliente.crearCarrito(usuario.getId());
+
+        return mapToDto(usuario);
     }
 
     public VisualizarDatosUsuarioResponseDTO verDatosUsuarioPorId(Long id){
@@ -55,5 +62,5 @@ public class UsuarioService {
         return mapToDto(repo.save(usuario));
     }
 
-    //Falta metodo para eliminar
+    //Falta metodo para eliminar | consumir deleteMappging de carrito para eliminarlo tambien
 }
