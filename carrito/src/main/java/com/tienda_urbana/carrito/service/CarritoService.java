@@ -26,8 +26,8 @@ public class CarritoService {
         return repo.save(new Carrito(null, usuarioId));
     }
     
-    public List<CarritoItemResponseDTO> verCarrito(Long id){
-        Carrito carrito = repo.findById(id).orElseThrow(()-> new ElementoNoEncontradoException("Carrito", id));
+    public List<CarritoItemResponseDTO> verCarritoPorUsuarioId(Long id){
+        Carrito carrito = repo.findByUsuarioId(id).orElseThrow(()-> new ElementoNoEncontradoException("Carrito", id));
         return itemRepo.findByCarrito(carrito).stream().map(item -> itemService.mapToDto(item)).collect(Collectors.toList());
     }
 

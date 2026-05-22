@@ -30,7 +30,7 @@ public class CarritoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<CarritoItemResponseDTO>> verCarrito(@PathVariable Long id){
-        return ResponseEntity.ok(service.verCarrito(id));
+    public ResponseEntity<List<CarritoItemResponseDTO>> verCarritoPorUsuarioId(@PathVariable Long id){
+        return ResponseEntity.ok(service.verCarritoPorUsuarioId(id));
     }
 }
