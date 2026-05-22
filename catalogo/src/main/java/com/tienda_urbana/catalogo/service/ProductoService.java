@@ -83,4 +83,10 @@ public class ProductoService {
         return prodRepo.findByCategoria(categoria).stream().map(this::mapToListDto).collect(Collectors.toList());
     }
 
+    public List<ProductoResponseDTO> obtenerProductosPorIds(List<Long> ids){
+        List<Producto> productos = prodRepo.findAllById(ids);
+
+        return productos.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
 }
