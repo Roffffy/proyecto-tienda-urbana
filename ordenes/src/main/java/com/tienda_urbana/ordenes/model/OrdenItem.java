@@ -29,6 +29,9 @@ public class OrdenItem {
     @Column(name = "cantidad", nullable = false)
     private int cantidad;
 
+    @Column(name = "precio_unitario", nullable = false)
+    private int precioUnitario;
+
     @ManyToOne
     @JoinColumn(name = "orden_id")
     private Orden orden;
