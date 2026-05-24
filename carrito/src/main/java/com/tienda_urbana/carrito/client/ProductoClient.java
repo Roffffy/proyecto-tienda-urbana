@@ -8,8 +8,8 @@ import com.tienda_urbana.carrito.dto.ProductoDTO;
 
 @FeignClient(name = "ms-productos", url = "${ms.productos.url}")
 public interface ProductoClient {
-    
-    @GetMapping("/api/productos/{id}")
-    ProductoDTO obtenerPorId(@PathVariable Long id);
+
+    @GetMapping("/api/productos/{id}/enviar-carro")
+    ProductoDTO obtenerProducto(@PathVariable Long id);
 
 }
