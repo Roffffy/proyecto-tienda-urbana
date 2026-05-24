@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-// agregar validaciones
-public class AgregarCarritoItemRequestDTO {
+@NoArgsConstructor
+public class AgregarItemRequestDTO {
 
-    private int cantidad;
     private Long productoId;
+    private int cantidad;
 }
