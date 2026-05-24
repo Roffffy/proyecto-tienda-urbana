@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.tienda_urbana.catalogo.dto.ProductoCarritoResponseDTO;
 import com.tienda_urbana.catalogo.dto.ProductoListaResponseDTO;
 import com.tienda_urbana.catalogo.dto.ProductoRequestDTO;
 import com.tienda_urbana.catalogo.dto.ProductoResponseDTO;
@@ -24,7 +25,7 @@ public class ProductoService {
     private final CategoriaRepository catRepo;
 
     private ProductoResponseDTO mapToDto(Producto producto) {
-        return new ProductoResponseDTO(producto.getNombre(), producto.getDescripcion(), producto.getPrecio(),
+        return new ProductoResponseDTO(producto.getId(), producto.getNombre(), producto.getDescripcion(), producto.getPrecio(),
                 producto.getTalla(), producto.getStock(), producto.getCategoria().getNombre());
     }
 
@@ -71,6 +72,14 @@ public class ProductoService {
     public ProductoResponseDTO verProducto(Long id) {
         return mapToDto(prodRepo.findById(id)
                 .orElseThrow(() -> new ElementoNoEncontradoException("Producto", id)));
+    }
+
+    private ProductoCarritoResponseDTO mapToCarritoDto(Producto producto){
+        return new ProductoCarritoResponseDTO(producto.getId(), producto.getNombre(), producto.getCategoria().getNombre(), producto.getTalla(), producto.getPrecio(), 0);
+    }
+
+    public ProductoCarritoResponseDTO enviarAlCarrito(Long id){
+        return mapToCarritoDto(prodRepo.findById(id).orElseThrow(()-> new ElementoNoEncontradoException("Producto", id)));
     }
 
     public List<ProductoListaResponseDTO> buscarProducto(String nombre) {

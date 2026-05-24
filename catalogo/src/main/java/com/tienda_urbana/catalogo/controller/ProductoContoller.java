@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tienda_urbana.catalogo.dto.ProductoCarritoResponseDTO;
 import com.tienda_urbana.catalogo.dto.ProductoListaResponseDTO;
 import com.tienda_urbana.catalogo.dto.ProductoRequestDTO;
 import com.tienda_urbana.catalogo.dto.ProductoResponseDTO;
@@ -57,6 +58,11 @@ public class ProductoContoller {
     @GetMapping("/{id}")
     public ResponseEntity<ProductoResponseDTO> verProducto(@PathVariable Long id){
         return ResponseEntity.ok(service.verProducto(id));
+    }
+
+    @GetMapping("/{id}/enviar-carro")
+    public ResponseEntity<ProductoCarritoResponseDTO> enviarAlCarrito(@PathVariable Long id){
+        return ResponseEntity.ok(service.enviarAlCarrito(id));
     }
 
     // Metodo para buscar un producto por su nombre
