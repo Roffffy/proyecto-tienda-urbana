@@ -16,7 +16,7 @@ public class OpenApiConfig {
         return new OpenAPI()
             .info(
                 new Info()
-                    .title("Microservicio de Catalogo")
+                    .title("Microservicio de Usuarios")
                     .version("1.0.0")
                     .description("null")
                     .contact(
