@@ -1,8 +1,5 @@
 package com.tienda_urbana.usuarios.controller;
 
-
-import java.util.Map;
-
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
