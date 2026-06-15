@@ -9,6 +9,7 @@ import com.tienda_urbana.catalogo.dto.CategoriaRequestDTO;
 import com.tienda_urbana.catalogo.dto.CategoriaResponseDTO;
 import com.tienda_urbana.catalogo.exception.CategoriaYaExistenteException;
 import com.tienda_urbana.catalogo.exception.ElementoNoEncontradoException;
+import com.tienda_urbana.catalogo.exception.SinCategoriaException;
 import com.tienda_urbana.catalogo.model.Categoria;
 import com.tienda_urbana.catalogo.repository.CategoriaRepository;
 import com.tienda_urbana.catalogo.repository.ProductoRepository;
@@ -57,8 +58,7 @@ public class CategoriaService {
             throw new ElementoNoEncontradoException("Categoria", id);
         }
         if (id == 1) {
-            // Cambiar excepcion
-            throw new RuntimeException("No se puede eliminar la categoria con ID: 1");
+            throw new SinCategoriaException();
         }
         
         prodRepo.reasignarCategoria(id);
