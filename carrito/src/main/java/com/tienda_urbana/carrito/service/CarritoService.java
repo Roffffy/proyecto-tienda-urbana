@@ -33,7 +33,7 @@ public class CarritoService {
     }
 
     public ProductoDTO agregarItem(Long usuarioId, AgregarItemRequestDTO dto){
-        Carrito carrito = carritoRepo.findByUsuarioId(usuarioId).orElseThrow(()-> new ElementoNoEncontradoException("Usuario", usuarioId));
+        Carrito carrito = carritoRepo.findByUsuarioId(usuarioId).orElseThrow(()-> new ElementoNoEncontradoException("Usuario", usuarioId));//Tal vez cambiar excepcion y preguntar demas microservicios por existencia de usurios o productos
         return mapToDto(itemRepo.save(new CarritoItem(null, dto.getCantidad(), dto.getProductoId(), carrito)));
     }
     
