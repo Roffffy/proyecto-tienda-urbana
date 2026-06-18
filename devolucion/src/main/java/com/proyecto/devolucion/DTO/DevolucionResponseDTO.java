@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DevolucionResponseDTO {
     @Schema(
-        description = "identificador unico en el proceso de devolucion",
-        example = "1",
-        accessMode = Schema.AccessMode.READ_ONLY
+        description="ID único de la devolucion, generado automáticamente",
+        example="1",
+        accessMode=Schema.AccessMode.READ_ONLY
     )
     private Long id;
 
@@ -22,14 +22,19 @@ public class DevolucionResponseDTO {
 
     private String fotoEnviadaUrl;
 
+     @Schema(
+        description="estado actual de la devolucion",
+        example="pendiente",
+        accessMode=Schema.AccessMode.READ_ONLY
+    )
     private String estado;
 
     private String etiquetaRetornoUrl;
 
     @Schema(
-        description = "fecha y hora en que se soliicta la devolucion",
-        example = "2026-06-10T15:30:00",
-        accessMode = Schema.AccessMode.READ_ONLY
+        description="fecha y hora en la que se solicito la devolucion",
+        example="2026-06-17T16:30:00",
+        accessMode=Schema.AccessMode.READ_ONLY
     )
     private LocalDateTime solocitadoEn;
 
