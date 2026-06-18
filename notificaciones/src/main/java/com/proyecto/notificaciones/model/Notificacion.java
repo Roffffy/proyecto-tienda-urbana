@@ -18,57 +18,58 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "notificaciones")
-@Schema(description = "entidad que representa las notificaciones")
+@Schema(description = "entidad que representa las notificaciones del sistema")
 public class Notificacion {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Schema(
-        description = "identificador unico generado de forma automatica por la BD",
-        example = "1",
-        accessMode = Schema.AccessMode.READ_ONLY
+        description="Identificador único generado automáticamente por la BD",
+        example="1",
+        accessMode=Schema.AccessMode.READ_ONLY
     )
     private Long id;
 
     @Column(name = "tipo_clasificacion", nullable = false)
     @Schema(
-        description = "tipo de notificacion",
-        example = "alerta"
+        description ="tipo de notificacion segun el sistema (3j: pedido, pago, reseña, usuario)",
+        example = "reseña"
     )
     private String tipo;
 
     @Column(name = "canal_notificacion", nullable = false)
      @Schema(
-        description = "dara a conocer de donde se mandara la notificacion al usuario",
+        description ="canal por el cual se envia las notificaciones (email, sms)",
         example = "email"
     )
     private String canal;
 
     @Column(name = "mensaje", length = 400)
      @Schema(
-        description = "esta funcion consiste en que quiere consultar o en que momento se dara el pedido",
-        example = "su compra fue realizada con exito"
+        description ="contenido del mensaje en la notificacion",
+        example = "tu reseña fue publicada exitosamente"
     )
     private String mensaje;
 
     @Column(name = "enviado", nullable = false)
      @Schema(
-        description = "identificador que dira si que el estado del pedido fue enviado correctamente",
+        description ="indica si la notificacion fue enviada o no",
         example = "true"
     )
     private boolean enviado;
 
     @Column(name = "enviado_en")
-     @Schema(
-        description = "fecha y hora en que la notificacion fue enviada",
-        example = "2026-05-20T14:30:00"
+    @Schema(
+        description = "Fecha y hora en la que la notificación fue enviada",
+        example = "2026-06-17T16:45:00",
+        accessMode=Schema.AccessMode.READ_ONLY
     )
     private LocalDateTime enviadoEn;
 
     @Column(name = "usuario_id", nullable = false)
-     @Schema(
-        description = "identificador del usuario en el cual es destinado en la notificacion",
-        example = "15"
+    @Schema(
+        description ="identficador del usuario que recibira las notificaciones",
+        example = "12"
     )
     private Long usuarioId;
 }
