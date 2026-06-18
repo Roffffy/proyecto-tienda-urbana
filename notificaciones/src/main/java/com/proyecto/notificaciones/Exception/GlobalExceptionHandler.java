@@ -88,5 +88,4 @@ public class GlobalExceptionHandler {
                         "Ocurrio un error interno del servidor. El equipo tecnico ha sido notificado.",
                         request.getRequestURI(), null));
     }
-
 }
