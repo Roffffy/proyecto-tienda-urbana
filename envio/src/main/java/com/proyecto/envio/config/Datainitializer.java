@@ -22,7 +22,7 @@ public class Datainitializer implements CommandLineRunner{
             return;
         }
         log.info("cargando envios preconfigurados");
-        envioRepository.save(new Envio(null, "Santiago Centro", "pendiente", "https://etiquetas/envio1.pdf", null, null, 1L));
+        envioRepository.save(new Envio(null, "Santiago Centro", "pendiente", "url2", null, null, 1L));
 
         log.info("{} envios insertados correctamente", envioRepository.count());
     }
