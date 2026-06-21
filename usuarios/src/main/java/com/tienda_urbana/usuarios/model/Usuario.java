@@ -29,8 +29,8 @@ public class Usuario {
     @Column(name = "email", nullable = false, length = 55, unique = true)
     private String email;
 
-    @Column(name = "contraseña", nullable = false, length = 55)
-    private String contraseña;
+    @Column(name = "contrasena", nullable = false, length = 55)
+    private String contrasena;
 
     @Column(name = "clave_recuperacion", nullable = true, length = 6)
     private String claveRecuperacion;
