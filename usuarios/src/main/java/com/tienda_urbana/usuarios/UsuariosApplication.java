@@ -13,3 +13,5 @@ public class UsuariosApplication {
 	}
 
 }
+// falta crear metodo para iniciar sesion. arreglar tema de creacion de carrito.
+// Test, apigatewat y erueka

@@ -48,10 +48,10 @@ public class UsuarioService {
 
     public void cambiarContraseña(Long id, CambioContraseniaRequestDTO dto){
         Usuario usuario = repo.findById(id).orElseThrow(() -> new ElementoNoEncontradoException("Usuario", id));
-        if (!dto.getContraseñaAntigua().equals(usuario.getContraseña())) {
+        if (!dto.getContraseñaAntigua().equals(usuario.getContrasena())) {
             throw new ContraseñaNoCoincideException(); //Crear exception 
         }
-        usuario.setContraseña(dto.getContraseñaNueva());
+        usuario.setContrasena(dto.getContraseñaNueva());
         repo.save(usuario);
     }
 
