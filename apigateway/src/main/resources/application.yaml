@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ruta-ms-usuarios
+              uri: lb://usuarios
+              predicates:
+                - Path=/api/usuarios,/api/usuarios/**
+            - id: ruta-ms-catalogo
+              uri: lb://catalogo
+              predicates:
+                - Path=/api/categorias,/api/categorias/**,/api/productos,/api/productos/**
+            - id: ruta-ms-carrito
+              uri: lb://carrito
+              predicates:
+                - Path=/api/carrito,/api/carrito/**
+            - id: ruta-ms-ordenes
+              uri: lb://ordenes
+              predicates:
+                - Path=/api/ordenes,/api/ordenes/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    hostname: 127.0.0.1
+    instance-id: 127.0.0.1:${spring.application.name}:${server.port}
+
+logging:
+  level:
+    '[org.springframework.cloud.gateway]': DEBUG
