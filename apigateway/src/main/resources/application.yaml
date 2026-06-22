@@ -25,6 +25,26 @@ spring:
               uri: lb://ordenes
               predicates:
                 - Path=/api/ordenes,/api/ordenes/**
+            - id: ruta-ms-devolucion
+              uri: lb://devolucion
+              predicates:
+                - Path=/api/devoluciones,/api/devoluciones/**
+            - id: ruta-ms-envio
+              uri: lb://envio
+              predicates:
+                - Path=/api/envio,/api/envio/**
+            - id: ruta-ms-notificaciones
+              uri: lb://notificaciones
+              predicates:
+                - Path=/api/notificaciones,/api/notificaciones/**
+            - id: ruta-ms-pagos
+              uri: lb://pagos
+              predicates:
+                - Path=/api/pagos,/api/pagos/**
+            - id: ruta-ms-resena
+              uri: lb://resena
+              predicates:
+                - Path=/api/resenas,/api/resenas**
 
 eureka:
   client:
