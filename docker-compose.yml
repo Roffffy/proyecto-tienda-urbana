@@ -88,6 +88,81 @@ services:
     restart: on-failure
     networks:
       - microservicios-net
+  devolucion:
+    build:
+      context: ./devolucion
+      dockerfile: Dockerfile
+    container_name: ms-devolucion
+    ports:
+      - "8086:8086"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - microservicios-net
+  envio:
+    build:
+      context: ./envio
+      dockerfile: Dockerfile
+    container_name: ms-envio
+    ports:
+      - "8087:8087"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - microservicios-net
+  notificaciones:
+    build:
+      context: ./notificaciones
+      dockerfile: Dockerfile
+    container_name: ms-notificaciones
+    ports:
+      - "8088:8088"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - microservicios-net
+  pagos:
+    build:
+      context: ./pagos
+      dockerfile: Dockerfile
+    container_name: ms-pagos
+    ports:
+      - "8089:8089"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - microservicios-net
+  resena:
+    build:
+      context: ./resena
+      dockerfile: Dockerfile
+    container_name: ms-resena
+    ports:
+      - "8085:8085"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - microservicios-net
   api-gateway:
     build:
       context: ./apigateway
@@ -105,6 +180,16 @@ services:
       carrito:
         condition: service_started
       ordenes:
+        condition: service_started
+      devolucion:
+        condition: service_started
+      envio:
+        condition: service_started
+      notificaciones:
+        condition: service_started
+      pagos:
+        condition: service_started
+      resena:
         condition: service_started
     restart: on-failure
     networks:
