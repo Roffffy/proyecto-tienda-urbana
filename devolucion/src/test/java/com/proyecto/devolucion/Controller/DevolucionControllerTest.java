@@ -1,10 +1,12 @@
 package com.proyecto.devolucion.Controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,8 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -69,4 +73,32 @@ public class DevolucionControllerTest {
         .andExpect(jsonPath("$.id").value(1L))
         .andExpect(jsonPath("$.motivo").value("producto roto"));
     }
+
+    @Test
+    @DisplayName("PUT api/devoluciones/{id} debe retornar el codigo 200 cuando los datos sean validos")
+    void actualizarDebeRetornar200cuandoSeaValido() throws Exception{
+        DevolucionRequestDTO request = new DevolucionRequestDTO("el producto llega roto","url2","url2",10L,5L);
+
+        DevolucionResponseDTO response = new DevolucionResponseDTO(1L,"el producto llega roto","url2","pendiente","url2",LocalDateTime.now(),10L,5L);
+
+        when(devolucionService.actualizarDevolucion(any(Long.class), any(DevolucionRequestDTO.class))).thenReturn(Optional.of(response));
+
+        mockMvc.perform(put("api/devoluciones/{id}", 1L).contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(request)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1L))
+        .andExpect(jsonPath("$.motivo").value("el producto llego roto"));
+    }
+
+    @Test
+    @DisplayName("delete api/devoluciones/{id} debe retornar 204")
+    void eliminarDebeRetornar204() throws Exception{
+        doNothing().when(devolucionService).eliminarDevolucion(1L);
+
+        mockMvc.perform(delete("api/devoluciones/{id}", 1L))
+        .andDo(print())
+        .andExpect(status().isNoContent());
+    }
 }
+

@@ -1,17 +1,23 @@
 package com.proyecto.envio.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -73,4 +79,30 @@ public class EnvioControllerTest {
         .andExpect(jsonPath("$.estado").value("atrasado"));
     }
 
+    @Test
+    @DisplayName("PUT api/envios/{id} debe retornar el codigo 200 cuando los datos sean validos")
+    void actualizarDebeRetornar200cuandoSeaValido() throws Exception{
+
+        EnvioRequestDTO request = new EnvioRequestDTO("Santiago centro av huerfanos 0234","EN_CAMINO","url2",LocalDateTime.now(),LocalDateTime.now(),10L);
+
+        EnvioResponseDTO response = new EnvioResponseDTO(1L,"Quilicura abenida O'Higgins","en_proceso","url3",LocalDateTime.now(),LocalDateTime.now(),15L);
+
+        mockMvc.perform(put("api/envios/{id}", 1L).contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(request)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1L))
+        .andExpect(jsonPath("$.estado").value("en_camino"));
+    }
+
+    @Test
+    @DisplayName("delete api/envios/{id} debe retornar 204")
+    void eliminarDebeRetornar204() throws Exception{
+        doNothing().when(envioService).eliminarEnvio(1L);
+
+        mockMvc.perform(delete("api/envios/{id}", 1L))
+        .andDo(print())
+        .andExpect(status().isNoContent());
+    }
 }
+
