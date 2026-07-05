@@ -1,6 +1,7 @@
 package com.proyecto.pagos.Controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -8,10 +9,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,4 +76,32 @@ public class PagoControllerTest {
     
     }
 
+    @Test
+    @DisplayName("PUT api/pagos/{id} debe retornar el codigo 200 cuando los datos sean validos")
+    void actualizarDebeRetornar200CuandoSeanValidos() throws Exception{
+        PagoRequestDTO request = new PagoRequestDTO("bancoestado","debito",new BigDecimal("30000"),"BE-12345",1L
+        );
+
+        PagoResponseDTO response = new PagoResponseDTO(1L,"bancoestado","aprobado","debito","BE-12345",new BigDecimal("30000"),LocalDateTime.now(),2L
+        );
+
+        when(pagoService.actualizarPago(any(Long.class), any(PagoRequestDTO.class))).thenReturn(Optional.of(response));
+
+        mockMvc.perform(put("api/pagos/{id}", 1L).contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(request)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.proveedor").value("bancoestado"));
+    }
+
+    @Test
+    @DisplayName("delete api/pagos/{id} debe retornar 204")
+    void eliminarDebeRetornar204() throws Exception{
+        doNothing().when(pagoService).eliminarPago(1L);
+
+        mockMvc.perform(delete("api/pagos/{id}", 1L))
+        .andDo(print())
+        .andExpect(status().isNoContent());
+    }
 }
