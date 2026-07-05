@@ -1,4 +1,4 @@
-package com.proyecto.pagos.Client;
+package com.proyecto.notificaciones.Client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;

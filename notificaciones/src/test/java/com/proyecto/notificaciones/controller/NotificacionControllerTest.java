@@ -1,15 +1,21 @@
 package com.proyecto.notificaciones.controller;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,6 +75,32 @@ public class NotificacionControllerTest {
         .andExpect(jsonPath("$.id").value(1))
         .andExpect(jsonPath("$.tipo").value("Compra"));
                    
-    
+    }
+
+    @Test
+    @DisplayName("PUT api/notificaciones/{id} debe retornar el codigo 200 cuando los datos sean validos")
+    void actualizarDebeRetornar200cuandoSeaValido() throws Exception{
+        NotificacionRequestDTO request = new NotificacionRequestDTO("alerta", "email", "su compra fue realizada con exito",15L);
+
+        NotificacionResponseDTO response = new NotificacionResponseDTO(1L, "alerta","email","su compra fue realizada con exito",true,LocalDateTime.now(),15L);
+
+        when(notificacionService.actualizarNotificacion(any(Long.class), any(NotificacionRequestDTO.class))).thenReturn(Optional.of(response));
+
+        mockMvc.perform(put("api/notificaciones/{id}", 1L).contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(request)))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id").value(1))
+        .andExpect(jsonPath("$.canal").value("email"));
+    }
+
+    @Test
+    @DisplayName("delete api/notificaciones/{id} debe retornar 204")
+    void eliminarDebeRetornar204() throws Exception{
+        doNothing().when(notificacionService).eliminarNotificacion(1L);
+
+        mockMvc.perform(delete("api/notificaciones/{id}", 1L))
+        .andDo(print())
+        .andExpect(status().isNoContent());
     }
 }
